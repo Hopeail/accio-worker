@@ -1,0 +1,35 @@
+name = "accio-worker"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# ---- D1 数据库 ----
+# 创建: wrangler d1 create accio-db
+# 然后把 database_id 填入下方
+[[d1_databases]]
+binding = "DB"
+database_name = "accio-db"
+database_id = "a488b090-b0f9-42b2-8f29-25e2ef910f75"
+
+# ---- KV 命名空间 ----
+# 创建: wrangler kv namespace create ACCIO_KV
+# 然后把 id 填入下方
+[[kv_namespaces]]
+binding = "KV"
+id = "e71e7442ea8e433cb196754655409714"
+
+# ---- 环境变量 ----
+[vars]
+ACCIO_BASE_URL = "https://phoenix-gw.alibaba.com"
+ACCIO_VERSION = "0.5.6"
+ADMIN_PASSWORD = "admin"
+
+# ---- 静态资源作为文本模块导入 ----
+[[rules]]
+type = "Text"
+globs = ["**/*.html"]
+fallthrough = false
+
+# ---- 定时任务: 每5分钟巡检额度 ----
+[triggers]
+crons = ["*/5 * * * *"]
